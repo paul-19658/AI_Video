@@ -20,7 +20,7 @@ const StoryStep: React.FC = () => {
               setEditStoryContent(state.longStory || '');
               setEditingStory(true);
             }}
-            className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-700/50 px-4 py-2 rounded-full border border-gray-700 transition-all"
+            className="inline-flex items-center gap-2 text-xs text-gray-400 hover:text-white bg-gray-800/50 hover:bg-gray-700/50 px-4 py-2 rounded-full border border-gray-700 transition-all"
           >
             <i className="fa-solid fa-pen"></i> 编辑故事
           </button>
@@ -81,16 +81,16 @@ const StoryStep: React.FC = () => {
 
       {/* 操作按钮 */}
       {!editingStory && state.status !== 'processing' && state.longStory && (
-        <div className="flex justify-center gap-5">
+        <div className="flex justify-center gap-4">
           <button
             onClick={() => setNextStepTrigger(AppStep.KEYFRAMES)}
-            className="px-10 py-4 rounded-2xl text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 font-semibold text-base shadow-lg shadow-purple-900/30 transition-all"
+            className="px-8 py-3 rounded-xl text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 font-semibold text-sm shadow-lg shadow-purple-900/30 transition-all"
           >
             继续生成关键帧
           </button>
           <button
             onClick={() => setState(prev => ({ ...prev, status: 'idle' }))}
-            className="px-10 py-4 rounded-2xl text-gray-300 bg-gray-800/60 hover:bg-gray-700/60 border border-gray-600 text-base font-medium transition-all"
+            className="px-5 py-2.5 rounded-xl text-sm text-gray-400 hover:text-white bg-gray-800/60 hover:bg-gray-700/60 border border-gray-600 font-medium transition-all"
           >
             返回修改
           </button>
