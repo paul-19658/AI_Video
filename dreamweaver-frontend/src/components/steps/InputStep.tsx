@@ -27,12 +27,9 @@ const InputStep: React.FC = () => {
             </span>
           </div>
           <p className="dw-hero-subtitle">
-            让每一个想法，都成为精彩的故事
+            从想法到视频，AI 一站式完成
           </p>
         </h1>
-        <p className="dw-hero-subtitle">
-          输入你的故事想法，AI 将为你生成完整的视频内容
-        </p>
 
         {/* 模板选择器 */}
         <div className="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-3" style={{ marginBottom: 'var(--spacing-xl)' }}>
