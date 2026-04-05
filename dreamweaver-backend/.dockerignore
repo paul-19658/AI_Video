@@ -1,0 +1,9 @@
+.dockerignore
+Dockerfile
+.dockerignore
+*.md
+.git
+miniconda3
+node_modules
+uploads
+*.tar

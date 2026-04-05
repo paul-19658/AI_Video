@@ -1,0 +1,31 @@
+# ====================
+# Common
+# ====================
+.env
+.env.local
+.env.*.local
+*.log
+.claude/
+dreamweaver-frontend/src/App.tsx.backup
+
+# ====================
+# Backend - artifact
+# ====================
+dreamweaver-backend/dreamweaver-frontend/
+
+# ====================
+# Frontend
+# ====================
+dreamweaver-frontend/node_modules/
+dreamweaver-frontend/dist/
+dreamweaver-frontend/*.tsbuildinfo
+
+# ====================
+# Backend
+# ====================
+dreamweaver-backend/.venv/
+dreamweaver-backend/__pycache__/
+dreamweaver-backend/*.pyc
+dreamweaver-backend/dreamweaver.db
+dreamweaver-backend/media/
+dreamweaver-backend/uploads/
