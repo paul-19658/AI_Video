@@ -204,6 +204,51 @@ export async function getProjectVersions(projectId: string): Promise<ProjectVers
   return fetchApi<ProjectVersions>(`${API_BASE}/projects/${projectId}/versions`, undefined, 'GET');
 }
 
+export interface OutlineVersionDetail {
+  id: string;
+  project_id: string;
+  parent_id: string | null;
+  title: string;
+  chapters: string;
+  is_ai_generated: number;
+  created_at: string;
+}
+
+export interface StoryVersionDetail {
+  id: string;
+  project_id: string;
+  outline_id: string | null;
+  parent_id: string | null;
+  content: string;
+  is_ai_generated: number;
+  created_at: string;
+}
+
+export interface KeyframeVersionDetail {
+  id: string;
+  project_id: string;
+  story_id: string | null;
+  parent_id: string | null;
+  sequence: number;
+  description: string;
+  visual_prompt: string;
+  image_path: string;
+  is_ai_generated: number;
+  created_at: string;
+}
+
+export async function getOutlineVersion(projectId: string, outlineId: string): Promise<OutlineVersionDetail> {
+  return fetchApi<OutlineVersionDetail>(`${API_BASE}/projects/${projectId}/outlines/${outlineId}`, undefined, 'GET');
+}
+
+export async function getStoryVersion(projectId: string, storyId: string): Promise<StoryVersionDetail> {
+  return fetchApi<StoryVersionDetail>(`${API_BASE}/projects/${projectId}/stories/${storyId}`, undefined, 'GET');
+}
+
+export async function getKeyframeVersion(projectId: string, keyframeId: string): Promise<KeyframeVersionDetail> {
+  return fetchApi<KeyframeVersionDetail>(`${API_BASE}/projects/${projectId}/keyframes/${keyframeId}`, undefined, 'GET');
+}
+
 // Generation API
 const GEN_API_BASE = '/dreamweaver-api/api/generate';
 

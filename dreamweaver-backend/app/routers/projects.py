@@ -209,6 +209,102 @@ def get_project_versions(
     }
 
 
+@router.get("/{project_id}/outlines/{outline_id}")
+def get_outline_version(
+    project_id: str,
+    outline_id: str,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Get specific outline version by ID"""
+    project = db.query(Project).filter(
+        Project.id == project_id, Project.user_id == current_user.id
+    ).first()
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    outline = db.query(Outline).filter(
+        Outline.id == outline_id, Outline.project_id == project_id
+    ).first()
+    if not outline:
+        raise HTTPException(status_code=404, detail="Outline not found")
+
+    return {
+        "id": outline.id,
+        "project_id": outline.project_id,
+        "parent_id": outline.parent_id,
+        "title": outline.title,
+        "chapters": outline.chapters,
+        "is_ai_generated": outline.is_ai_generated,
+        "created_at": outline.created_at.isoformat()
+    }
+
+
+@router.get("/{project_id}/stories/{story_id}")
+def get_story_version(
+    project_id: str,
+    story_id: str,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Get specific story version by ID"""
+    project = db.query(Project).filter(
+        Project.id == project_id, Project.user_id == current_user.id
+    ).first()
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    story = db.query(Story).filter(
+        Story.id == story_id, Story.project_id == project_id
+    ).first()
+    if not story:
+        raise HTTPException(status_code=404, detail="Story not found")
+
+    return {
+        "id": story.id,
+        "project_id": story.project_id,
+        "outline_id": story.outline_id,
+        "parent_id": story.parent_id,
+        "content": story.content,
+        "is_ai_generated": story.is_ai_generated,
+        "created_at": story.created_at.isoformat()
+    }
+
+
+@router.get("/{project_id}/keyframes/{keyframe_id}")
+def get_keyframe_version(
+    project_id: str,
+    keyframe_id: str,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Get specific keyframe version by ID"""
+    project = db.query(Project).filter(
+        Project.id == project_id, Project.user_id == current_user.id
+    ).first()
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    keyframe = db.query(Keyframe).filter(
+        Keyframe.id == keyframe_id, Keyframe.project_id == project_id
+    ).first()
+    if not keyframe:
+        raise HTTPException(status_code=404, detail="Keyframe not found")
+
+    return {
+        "id": keyframe.id,
+        "project_id": keyframe.project_id,
+        "story_id": keyframe.story_id,
+        "parent_id": keyframe.parent_id,
+        "sequence": keyframe.sequence,
+        "description": keyframe.description,
+        "visual_prompt": keyframe.visual_prompt,
+        "image_path": keyframe.image_path,
+        "is_ai_generated": keyframe.is_ai_generated,
+        "created_at": keyframe.created_at.isoformat()
+    }
+
+
 @router.get("/{project_id}", response_model=ProjectDetailResponse)
 def get_project(
     project_id: str,

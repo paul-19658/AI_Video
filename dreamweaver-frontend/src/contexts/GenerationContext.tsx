@@ -47,6 +47,9 @@ interface GenerationContextType {
   formatDate: (dateStr: string) => string;
   loadProjects: () => Promise<void>;
   loadVersionHistory: () => Promise<void>;
+  loadOutlineVersion: (outlineId: string) => Promise<void>;
+  loadStoryVersion: (storyId: string) => Promise<void>;
+  loadKeyframeVersion: (keyframeId: string) => Promise<void>;
 }
 
 const GenerationContext = createContext<GenerationContextType | null>(null);
@@ -206,6 +209,60 @@ export const GenerationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     }
   }, [state.projectId]);
 
+  const loadOutlineVersion = useCallback(async (outlineId: string) => {
+    if (!state.projectId) return;
+    try {
+      const detail = await api.getOutlineVersion(state.projectId, outlineId);
+      setState(prev => ({
+        ...prev,
+        outline: { title: detail.title, chapters: JSON.parse(detail.chapters) },
+        outlineId: detail.id,
+      }));
+      setShowVersionHistory(false);
+    } catch (err) {
+      console.error('Failed to load outline version:', err);
+    }
+  }, [state.projectId]);
+
+  const loadStoryVersion = useCallback(async (storyId: string) => {
+    if (!state.projectId) return;
+    try {
+      const detail = await api.getStoryVersion(state.projectId, storyId);
+      setState(prev => ({
+        ...prev,
+        longStory: detail.content,
+        storyId: detail.id,
+        outlineId: detail.outline_id || prev.outlineId,
+      }));
+      setShowVersionHistory(false);
+    } catch (err) {
+      console.error('Failed to load story version:', err);
+    }
+  }, [state.projectId]);
+
+  const loadKeyframeVersion = useCallback(async (keyframeId: string) => {
+    if (!state.projectId) return;
+    try {
+      const detail = await api.getKeyframeVersion(state.projectId, keyframeId);
+      // Replace the keyframe at the correct sequence
+      setState(prev => {
+        const newKeyframes = [...prev.keyframes];
+        const seq = detail.sequence ?? 0;
+        newKeyframes[seq] = {
+          id: detail.id,
+          storyId: detail.story_id || null,
+          description: detail.description,
+          imageUrl: detail.image_path || '',
+          visualPrompt: detail.visual_prompt,
+        };
+        return { ...prev, keyframes: newKeyframes };
+      });
+      setShowVersionHistory(false);
+    } catch (err) {
+      console.error('Failed to load keyframe version:', err);
+    }
+  }, [state.projectId]);
+
   const startGeneration = useCallback(async () => {
     if (!state.prompt.trim()) return;
 
@@ -322,6 +379,9 @@ export const GenerationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         formatDate,
         loadProjects,
         loadVersionHistory,
+        loadOutlineVersion,
+        loadStoryVersion,
+        loadKeyframeVersion,
         versions,
         setVersions,
       }}
