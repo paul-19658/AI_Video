@@ -126,7 +126,31 @@ def get_projects(
 ):
     """Get all projects for current user"""
     projects = db.query(Project).filter(Project.user_id == current_user.id).order_by(Project.created_at.desc()).all()
-    return projects
+
+    # Dynamically compute current_step based on actual data (instead of relying on stored field)
+    result = []
+    for p in projects:
+        # Check if project has video
+        video = db.query(Video).filter(Video.project_id == p.id).first()
+        if video:
+            p.current_step = "video"
+        else:
+            # Check if project has keyframes
+            kf = db.query(Keyframe).filter(Keyframe.project_id == p.id).first()
+            if kf:
+                p.current_step = "keyframes"
+            else:
+                # Check if project has story
+                story = db.query(Story).filter(Story.project_id == p.id).first()
+                if story:
+                    p.current_step = "story"
+                else:
+                    # Check if project has outline
+                    outline = db.query(Outline).filter(Outline.project_id == p.id).first()
+                    p.current_step = "outline" if outline else "outline"
+        result.append(p)
+
+    return result
 
 
 @router.post("", response_model=ProjectResponse)

@@ -84,13 +84,13 @@ const StoryStep: React.FC = () => {
         <div className="flex justify-center gap-4">
           <button
             onClick={() => setNextStepTrigger(AppStep.KEYFRAMES)}
-            className="px-8 py-3 rounded-xl text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 font-semibold text-sm shadow-lg shadow-purple-900/30 transition-all"
+            className="min-w-[160px] px-8 py-4 rounded-xl text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 font-semibold text-sm shadow-lg shadow-purple-900/30 transition-all"
           >
             继续生成关键帧
           </button>
           <button
             onClick={() => setState(prev => ({ ...prev, status: 'idle' }))}
-            className="px-5 py-2.5 rounded-xl text-sm text-gray-400 hover:text-white bg-gray-800/60 hover:bg-gray-700/60 border border-gray-600 font-medium transition-all"
+            className="min-w-[140px] px-6 py-4 rounded-xl text-sm text-gray-400 hover:text-white bg-gray-800/60 hover:bg-gray-700/60 border border-gray-600 font-medium transition-all"
           >
             返回修改
           </button>
